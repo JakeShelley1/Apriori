@@ -11,14 +11,15 @@ def createHashTable(size):
 		hashTable[i] = 0
 	return hashTable
 
-def findItemSets()
-	
+def hashItemSets(x, y):
+	itemSetHash[((x * 10) + y) % 7] += 1
 
 def parseLine(line):
 	array = line.split(" ")
 	for i in range (len(array) - 1):
 		L[int(array[i])] += 1
-		for j in range (i + 1, len(array) - 1) 
+		for j in range (i + 1, len(array) - 1):
+			hashItemSets(int(array[i]), int(array[j]))
 
 with open('T10I4D100KTest.dat') as data:
 	#Create hashes of estimated size
