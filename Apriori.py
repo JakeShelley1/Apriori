@@ -3,6 +3,8 @@
 #979 MAX
 #7 MIN
 
+import time
+import sys
 import numpy as np
 
 #create hashtable of size 'size'
@@ -39,10 +41,10 @@ def createCandidate(line, minSupp, candidate):
 						print(i, j)
 
 
-def apriori(inp, minSupp, out):
+def apriori(inp, out, minSupp,):
 	global itemSetHash, L
-	itemSetHash = createHashTable(2000)
-	L = createHashTable(980)
+	itemSetHash = createHashTable(10000)	#This should be set to the estimated highest value of your hash table
+	L = createHashTable(2000)	#This should be set to the highest value in the file
 	with open(inp) as data:
 		for line in data:
 			createL(line)
@@ -53,8 +55,15 @@ def apriori(inp, minSupp, out):
 			print(line)
 			createCandidate(line, minSupp, candidate)
 
+def main():
+	inp = str(sys.argv[1])
+	out = str(sys.argv[2])
+	minSupp = int(sys.argv[3])
+	apriori(inp, out, minSupp)
 
-apriori('T10I4D100KTest.dat', 2, 'candidate.dat')
+start_time = time.time()
+main()
+print(time.time() - start_time)
 
 
 
