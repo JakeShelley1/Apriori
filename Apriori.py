@@ -26,4 +26,4 @@ with open('T10I4D100KTest.dat') as data:
 	itemSetHash = createHashTable(2000)
 	L = createHashTable(980)
 	for line in data:
-		n = parseLine(line)
+		parseLine(line)
