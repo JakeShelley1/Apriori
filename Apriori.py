@@ -14,31 +14,51 @@ def createHashTable(size):
 		hashTable[i] = 0
 	return hashTable
 
-#return hash address for itemSet
-def hashItemSets(x, y):
-	return(((x * 10) + y) % 7)
+# #return hash address for pair of items
+# def hashItemPair(x, y):
+# 	return(((x * 10) + y) % 7)
 
-#create hash table 'L'
-def createL(line):
+def getHashAddress(array):
+	k = int(array[0])*10
+	for i in array:
+		k = k + int(i)
+	k = k % 7
+	return k
+		 
+def createLAnditemSetHash(line):
 	array = line.split(" ")
 	for i in range (len(array) - 1):
 		L[int(array[i])] += 1
 		for j in range (i + 1, len(array) - 1):
-			address = hashItemSets(int(array[i]), int(array[j]))
+			sliceArray = array[i:j+1]
+			address = getHashAddress(sliceArray)
 			itemSetHash[address] += 1
 
 #write candidate
 def createCandidate(line, minSupp, candidate):
 	array = line.split(" ")
 	for i in range (len(array) - 1):
+		badValue = False
 		if (L[int(array[i])] < minSupp):
 			continue
 		else:
+			candidate.write(array[i] + " (" + str(L[int(array[i])]) + ")\n" )
 			for j in range (i + 1, len(array) - 1):
-				if (L[int(array[j])] >= minSupp):
-					address = hashItemSets(int(array[i]), int(array[j]))
-					if (itemSetHash[address] >= minSupp):
-						print(i, j)
+				if (badValue):	#break if a value between i and j is not within minSupp
+					break
+				else:
+					if (L[int(array[j])] < minSupp):
+						badValue = True
+					else:
+						sliceArray = array[i:j+1]					
+						address = getHashAddress(sliceArray)
+						if (itemSetHash[address] >= minSupp):
+							for n in range(len(sliceArray) - 1):
+								if (n == len(sliceArray) - 1):
+									candidate.write(str(sliceArray[n]))
+								else:
+									candidate.write(str(sliceArray[n]) + ", ")
+							candidate.write(" (" + str(itemSetHash[int(address)]) + ")\n" )
 
 
 def apriori(inp, out, minSupp,):
@@ -47,12 +67,11 @@ def apriori(inp, out, minSupp,):
 	L = createHashTable(2000)	#This should be set to the highest value in the file
 	with open(inp) as data:
 		for line in data:
-			createL(line)
+			createLAnditemSetHash(line)
 
 	with open(inp) as data:
 		candidate = open(out, 'w')
 		for line in data:
-			print(line)
 			createCandidate(line, minSupp, candidate)
 
 def main():
@@ -64,6 +83,4 @@ def main():
 start_time = time.time()
 main()
 print(time.time() - start_time)
-
-
-
+print(itemSetHash[0])

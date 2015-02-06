@@ -18,15 +18,20 @@ import numpy as np
 # 	for line in data:
 # 		print(line.split(" "))
 # 	#this works^
+dict1 = {10}
+for i in dict1:
+	i = 0
+print dict1
+thelist = ["5", "6", "7", "2"]
+for j in thelist:
+	dict1[j:] += 1
+print(dict1)
 
-thelist = [2, 4, 5, 6, 7, 8, 4, 1, 3, 7, 8, 1, 5, 6, 7, 2]
-
-
-print(len(thelist))
-for i in thelist:
-	print(i)
-	if (i < 3):
-		thelist.remove(i)
-		print(str(i) + " removed")
-print(len(thelist))
-print(thelist)
+# print(len(thelist))
+# for i in thelist:
+# 	print(i)
+# 	if (i < 3):
+# 		thelist.remove(i)
+# 		print(str(i) + " removed")
+# print(len(thelist))
+# print(thelist)
