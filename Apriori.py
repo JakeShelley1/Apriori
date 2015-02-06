@@ -22,7 +22,7 @@ def getHashAddress(array):
 	k = int(array[0])*10
 	for i in array:
 		k = k + int(i)
-	k = k % 7
+	k = k % 37173
 	return k
 		 
 def createLAnditemSetHash(line):
@@ -53,7 +53,7 @@ def createCandidate(line, minSupp, candidate):
 						sliceArray = array[i:j+1]					
 						address = getHashAddress(sliceArray)
 						if (itemSetHash[address] >= minSupp):
-							for n in range(len(sliceArray) - 1):
+							for n in range(len(sliceArray)):
 								if (n == len(sliceArray) - 1):
 									candidate.write(str(sliceArray[n]))
 								else:
@@ -63,7 +63,7 @@ def createCandidate(line, minSupp, candidate):
 
 def apriori(inp, out, minSupp,):
 	global itemSetHash, L
-	itemSetHash = createHashTable(10000)	#This should be set to the estimated highest value of your hash table
+	itemSetHash = createHashTable(40000)	#This should be set to the estimated highest value of your hash table
 	L = createHashTable(2000)	#This should be set to the highest value in the file
 	with open(inp) as data:
 		for line in data:
