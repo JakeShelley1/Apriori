@@ -1,11 +1,5 @@
-#195 VALUES 
-#17 ROWS
-#979 MAX
-#7 MIN
-
 import time
 import sys
-import numpy as np
 
 #create hashtable of size 'size'
 def createHashTable(size):
