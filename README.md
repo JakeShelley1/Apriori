@@ -8,6 +8,4 @@ The program takes 3 arguments: The .dat file you want to analyze, the .dat file 
     
     $ python Apriori.py T10I4D100K.dat candidate.dat 500
     
-Would analyze T10I4D100K.dat, print the results to candidate.dat, and have a minimum support of 500. 
-
-It currently has an average runtime of about 47.5 seconds with a minimum support of 500.
+Would analyze T10I4D100K.dat, print the results to candidate.dat, and have a minimum support of 500.

@@ -30,26 +30,23 @@ def createLAnditemSetHash(line):
 def createCandidate(line, minSupp, candidate):
 	array = line.split(" ")
 	for i in range (len(array) - 1):
-		badValue = False
 		if (L[int(array[i])] < minSupp):
 			continue
 		else:
 			for j in range (i + 1, len(array) - 1):
-				if (badValue):	#break if a value between i and j is not within minSupp
+				if (L[int(array[j])] < minSupp):
+					i = j + 1
 					break
 				else:
-					if (L[int(array[j])] < minSupp):
-						badValue = True
-					else:
-						sliceArray = array[i:j+1]					
-						address = getHashAddress(sliceArray)
-						if (itemSetHash[address] >= minSupp):
-							for n in range(len(sliceArray)):
-								if (n == len(sliceArray) - 1):
-									candidate.write(str(sliceArray[n]))
-								else:
-									candidate.write(str(sliceArray[n]) + ", ")
-							candidate.write(" (" + str(itemSetHash[int(address)]) + ")\n" )
+					sliceArray = array[i:j+1]					
+					address = getHashAddress(sliceArray)
+					if (itemSetHash[address] >= minSupp):
+						for n in range(len(sliceArray)):
+							if (n == len(sliceArray) - 1):
+								candidate.write(str(sliceArray[n]))
+							else:
+								candidate.write(str(sliceArray[n]) + ", ")
+						candidate.write(" (" + str(itemSetHash[int(address)]) + ")\n" )
 
 
 def apriori(inp, out, minSupp,):
