@@ -1,112 +1,50 @@
 import time
 import sys
-from linkedList import *
+from collections import Counter
 
-#hash function for 'itemSetHash'
-def getHashAddress(array):
-	k = int(array[0])*10
-	for i in array:
-		if i == '\n' or i == '':
-			break
-		k = k + int(i)
-	k = k % 37173
-	return k
 
-def hashPairs(array):
-	address = getHashAddress(array)
-	temp = Node(array)
-	if itemSetHash[address].head == None:
-		itemSetHash[address].insert(temp)
-	flag = itemSetHash[address].search(temp)
-	if flag == -1:
-		itemSetHash[address].insert(temp)
+def countSets(i, array):
+	for j in range (i + 2, len(array)):
+		sliceArray = array[i:j+1]
+		sliceArray.sort()
+		temp = " ".join(sliceArray)
+		count[temp] += 1
 
-		 
-#fill hashtables		 
-def createLAnditemSetHash(line):
+def countPairs(i, array):
+	sliceArray = []
+	sliceArray.append(array[i])
+	for j in range(i+1, len(array)):
+		sliceArray.append(array[j])
+		sliceArray.sort()
+		temp = " ".join(sliceArray)
+		count[temp] += 1
+		sliceArray.remove(array[j])
+
+def countItemsAndPairs(line):
 	array = line.split(" ")
+	tempInt = len(array) - 1
+	if (array[tempInt] == '\n' or array[tempInt] == ''):
+		del array[tempInt]
 	for i in range (len(array)):
-		if array[i] == '\n' or array[i] == '':
-			break
-		L[int(array[i])] += 1
-		for j in range (i + 1, len(array)):
-			if array[i] == '\n' or array[i] == '':
-				break
-			sliceArray = array[i:j+1]
-			hashPairs(sliceArray)
+		count[array[i]] += 1
+		countPairs(i, array)
+		countSets(i, array)	
 
-def iterateList(head, minSupp, candidate):
-	while(head != None):
-		if (head.count >= minSupp):
-			for n in head.data:
-				candidate.write(n + ", ")
-			candidate.write("(" + str(head.count) + ")\n")
-		if (head.next == None):
-			break
-		else:
-			head = head.next
-
-
-
-def createCandidate2(minSupp, candidate):
-	for i in itemSetHash:
-		if itemSetHash[i].head == None:
-			continue
-		else:
-			iterateList(itemSetHash[i].head, minSupp, candidate)
-
-
-#write candidate
-def createCandidate(line, minSupp, candidate):
-	array = line.split(" ")
-	for i in range (len(array) - 1):
-		if (L[int(array[i])] < minSupp):
-			continue
-		else:
-			for j in range (i + 1, len(array) - 1):
-				if (L[int(array[j])] < minSupp):
-					i = j + 1
-					break
-				else:
-					sliceArray = array[i:j+1]					
-					address = getHashAddress(sliceArray)
-					if (itemSetHash[address] >= minSupp):
-						for n in range(len(sliceArray)):
-							if (n == len(sliceArray) - 1):
-								candidate.write(str(sliceArray[n]))
-							else:
-								candidate.write(str(sliceArray[n]) + ", ")
-						candidate.write(" (" + str(itemSetHash[int(address)]) + ")\n" )
-
+def writeCandidate(minSupp, candidate):
+	for i in count:
+		if count[i] >= minSupp:
+			candidate.write(i + " (" + str(count[i]) + ")\n")	
 
 def apriori(inp, out, minSupp,):
-	global itemSetHash, L
-	itemSetHash = {}
-	for i in range(37174):
-		itemSetHash[i] = linkedList()
-	L = {}
-	for i in range(1000):	#Set to the max value found in the dataset
-		L[i] = 0
-
+	global count
+	count = Counter()
 	with open(inp) as data:
 		for line in data:
-			createLAnditemSetHash(line)
-
+			countItemsAndPairs(line)
 	candidate = open(out, 'w')
-	candidate.write("Unique numbers:\n\n")
-	for key in L:
-		if (L[key] >= minSupp):
-			candidate.write(str(key) + " (" + str(L[key]) + ")\n" )
-
-	print "part 2"
-
-	candidate.write("\n\nItem Sets:\n\n")
-	with open(inp) as data:
-		createCandidate2(minSupp, candidate)
-		#for line in data:
-		 #	createCandidate(line, minSupp, candidate)
+	writeCandidate(minSupp, candidate)
 	candidate.close()
-
+	
 def main():
 	inp = str(sys.argv[1])
 	out = str(sys.argv[2])
