@@ -1,5 +1,5 @@
 # Apriori
-Apriori algorithm implementation in python using a Counter. This is meant as practice for data mining/python. Any suggestions for improvements are welcome.
+Apriori algorithm implementation in python using a Counter. This is meant as practice for data mining/python.
 
 I've included the T10I4D100K data file to run this with. I also included a smaller version of the same file.
 
