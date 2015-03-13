@@ -55,7 +55,7 @@ def createDataTable(inp):
 	return table
 
 def apriori(inp, out, minSupp):
-	global count, singleCount, flag
+	global count
 	count = Counter()
 	flag = True
 	start = 1
