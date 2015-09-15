@@ -4,20 +4,20 @@ from collections import Counter
 from itertools import combinations
 
 #Write the final candidate
-def writeCandidate(out, minSupp):
+def writeCandidate(out, minSupp, count):
 	for i in count:
 		if count[i] >= minSupp:
 			out.write(i + " (" + str(count[i]) + ")\n")
 
 #Counts all sets greather than 2 using combinations
-def countAllSets(array, start):
+def countAllSets(array, start, count):
 	for j in combinations(array, start):
 		y = list(j)
 		temp = " ".join(y)
 		count[temp] +=1			
 
 #Prune table for values and sets that no longer fit minimum support
-def pruneTable(table, start, minSupp):
+def pruneTable(table, start, minSupp, count):
 	for z in range((len(table))):
 		array = table[z]
 		deleteArray = []
@@ -55,7 +55,6 @@ def createDataTable(inp):
 	return table
 
 def apriori(inp, out, minSupp):
-	global count
 	count = Counter()
 	flag = True
 	start = 1
@@ -63,15 +62,15 @@ def apriori(inp, out, minSupp):
 	while (flag):
 		flag = False
 		for array in table:
-			countAllSets(array, start)
-		table = pruneTable(table, start, minSupp)
+			countAllSets(array, start, count)
+		table = pruneTable(table, start, minSupp, count)
 		start += 1
 		for check in table:
 			if len(check) != 0:
 				flag = True
 
 	out = open(out, 'w')
-	writeCandidate(out, minSupp)
+	writeCandidate(out, minSupp, count)
 	out.close()
 
 def main():
