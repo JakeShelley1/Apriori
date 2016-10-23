@@ -39,7 +39,9 @@ def pruneTable(table, start, minSupp, count):
 		table[z] = array	
 	return table
 
-#Create initial table
+# Create initial table
+# IMPORTANT: This creation method is specific to the format that the provided data
+#			 set uses. It will likely need to be modified for other data sets.
 def createDataTable(inp):
 	table = []
 	with open(inp) as data:
